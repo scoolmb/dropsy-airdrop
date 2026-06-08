@@ -1,0 +1,11 @@
+node_modules
+dist
+.env
+*.log
+.DS_Store
+examples
+lib
+*.tgz
+debug.json
+tsup.config.ts
+*.sh

@@ -1,0 +1,66 @@
+{
+  "name": "@dropsy/airdrop",
+  "version": "0.4.3",
+  "description": "Dropsy - The Token Distribution Layer on SOLANA - A powerful and flexible airdrop protocol for seamless token distribution on the Solana blockchain.",
+  "main": "./dist/index.js",
+
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://docs.dropsy.org/",
+  "repository": {
+    "url": "https://github.com/scoolmb/dropsy-airdrop"
+  },
+  "scripts": {
+    "test": "ts-node index.ts",
+    "build": "tsup"
+  },
+  "keywords": [
+    "solana",
+    "solana airdrop",
+    "web3",
+    "create airdrop",
+    "solana web3",
+    "dropsy",
+    "solana devtools",
+    "token distribution",
+    "airdrop protocol",
+    "solana sdk",
+    "merkle airdrop",
+    "gasless airdrop",
+    "solana token launch",
+    "nft airdrop",
+    "decentralized distribution",
+    "solana-program-library",
+    "anchor program",
+    "spl token",
+    "solana crypto",
+    "airdrop automation",
+    "web3 rewards",
+    "solana developer tools",
+    "solana token distribution",
+    "solana airdrop protocol",
+    "solana token airdrop",
+    "solana token distribution protocol",
+    "solana token launchpad",
+    "solana token marketing",
+    "solana token rewards",
+    "solana token giveaway",
+    "solana token raffles"
+  ],
+  "author": "MBK Official",
+  "license": "MIT",
+  "peerDependencies": {
+    "@solana-program/token": "^0.13.0",
+    "@solana/kit": "^6.8.0",
+    "merkletreejs": "^0.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

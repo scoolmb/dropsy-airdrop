@@ -1,0 +1,12 @@
+src
+tsconfig.json
+.gitignore
+node_modules
+tsconfig*.json
+examples
+lib
+*.tgz
+.DS_Store
+debug.json
+tsup.config.ts
+*.sh
