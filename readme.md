@@ -1,5 +1,3 @@
-# dropsy-airdrop
-
 ## What is Dropsy ?
 
 Dropsy Protocol is the token distribution layer for Solana, enabling creators, protocols, and teams to distribute tokens with zero friction.
@@ -42,17 +40,12 @@ pnpm add @dropsy/airdrop
 
 The @solana/kit and @solana-program/token are required if not already installed:
 
-# Using npm
-
-npm install @solana/kit @solana-program/token
-
-# Using yarn
-
-yarn add @solana/kit @solana-program/token
-
 ## Examples
 
-**Examples** under update (coming soon)
+**Examples**
+
+- Open source devnet Ui for testing : https://dropsy-devnet-ui.vercel.app/
+- Open source claim Portal : https://github.com/scoolmb/dropsy-claim-portal-scaffold
 
 ## 📚 Documentation
 
