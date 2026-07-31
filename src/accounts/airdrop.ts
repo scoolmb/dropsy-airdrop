@@ -66,6 +66,7 @@ export type Airdrop = {
   bitmapCount: number;
   state: number;
   version: number;
+  delegatePermissions: number;
   bump: number;
   padding: ReadonlyUint8Array;
 };
@@ -84,6 +85,7 @@ export type AirdropArgs = {
   bitmapCount: number;
   state: number;
   version: number;
+  delegatePermissions: number;
   bump: number;
   padding: ReadonlyUint8Array;
 };
@@ -106,8 +108,9 @@ export function getAirdropEncoder(): FixedSizeEncoder<AirdropArgs> {
       ["bitmapCount", getU16Encoder()],
       ["state", getU8Encoder()],
       ["version", getU8Encoder()],
+      ["delegatePermissions", getU8Encoder()],
       ["bump", getU8Encoder()],
-      ["padding", fixEncoderSize(getBytesEncoder(), 3)],
+      ["padding", fixEncoderSize(getBytesEncoder(), 2)],
     ]),
     (value) => ({ ...value, discriminator: AIRDROP_DISCRIMINATOR }),
   );
@@ -130,8 +133,9 @@ export function getAirdropDecoder(): FixedSizeDecoder<Airdrop> {
     ["bitmapCount", getU16Decoder()],
     ["state", getU8Decoder()],
     ["version", getU8Decoder()],
+    ["delegatePermissions", getU8Decoder()],
     ["bump", getU8Decoder()],
-    ["padding", fixDecoderSize(getBytesDecoder(), 3)],
+    ["padding", fixDecoderSize(getBytesDecoder(), 2)],
   ]);
 }
 

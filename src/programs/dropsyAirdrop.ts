@@ -32,7 +32,7 @@ import {
 } from "../instructions";
 
 export const DROPSY_AIRDROP_PROGRAM_ADDRESS =
-  "3b97gLF94DDpa7sJQ8orbE3Ab6JQWBsDQTdQ5azoZqcz" as Address<"3b97gLF94DDpa7sJQ8orbE3Ab6JQWBsDQTdQ5azoZqcz">;
+  "drophxkcW5TRfbMQgo45Yti3q8jVxuxvuNufMnu8WiE" as Address<"drophxkcW5TRfbMQgo45Yti3q8jVxuxvuNufMnu8WiE">;
 
 export enum DropsyAirdropAccount {
   Airdrop,
@@ -179,7 +179,7 @@ export function identifyDropsyAirdropInstruction(
 }
 
 export type ParsedDropsyAirdropInstruction<
-  TProgram extends string = "3b97gLF94DDpa7sJQ8orbE3Ab6JQWBsDQTdQ5azoZqcz",
+  TProgram extends string = "drophxkcW5TRfbMQgo45Yti3q8jVxuxvuNufMnu8WiE",
 > =
   | ({
       instructionType: DropsyAirdropInstruction.ClaimAirdrop;

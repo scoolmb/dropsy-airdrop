@@ -69,7 +69,8 @@ export type CreateAirdropInstruction<
   TAccountMasterCreator extends string | AccountMeta<string> = string,
   TAccountAirdrop extends string | AccountMeta<string> = string,
   TAccountMint extends string | AccountMeta<string> = string,
-  TAccountAuthority extends string | AccountMeta<string> = string,
+  TAccountAuthority extends string | AccountMeta<string> =
+    "6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A",
   TAccountSystemProgram extends string | AccountMeta<string> =
     "11111111111111111111111111111111",
   TRemainingAccounts extends readonly AccountMeta<string>[] = [],
@@ -183,7 +184,7 @@ export type CreateAirdropAsyncInput<
   masterCreator: Address<TAccountMasterCreator>;
   airdrop: Address<TAccountAirdrop>;
   mint: Address<TAccountMint>;
-  authority: TransactionSigner<TAccountAuthority>;
+  authority?: TransactionSigner<TAccountAuthority>;
   systemProgram?: Address<TAccountSystemProgram>;
   id: CreateAirdropInstructionDataArgs["id"];
   merkleRoot: CreateAirdropInstructionDataArgs["merkleRoot"];
@@ -284,6 +285,10 @@ export async function getCreateAirdropInstructionAsync<
       ],
     });
   }
+  if (!accounts.authority.value) {
+    accounts.authority.value =
+      "6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A" as Address<"6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A">;
+  }
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
       "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
@@ -338,7 +343,7 @@ export type CreateAirdropInput<
   masterCreator: Address<TAccountMasterCreator>;
   airdrop: Address<TAccountAirdrop>;
   mint: Address<TAccountMint>;
-  authority: TransactionSigner<TAccountAuthority>;
+  authority?: TransactionSigner<TAccountAuthority>;
   systemProgram?: Address<TAccountSystemProgram>;
   id: CreateAirdropInstructionDataArgs["id"];
   merkleRoot: CreateAirdropInstructionDataArgs["merkleRoot"];
@@ -412,6 +417,10 @@ export function getCreateAirdropInstruction<
   const args = { ...input };
 
   // Resolve default values.
+  if (!accounts.authority.value) {
+    accounts.authority.value =
+      "6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A" as Address<"6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A">;
+  }
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
       "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;

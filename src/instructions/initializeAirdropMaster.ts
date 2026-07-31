@@ -64,7 +64,8 @@ export type InitializeAirdropMasterInstruction<
   TAccountProtocolTreasury extends string | AccountMeta<string> = string,
   TAccountTreasury extends string | AccountMeta<string> = string,
   TAccountAffiliate extends string | AccountMeta<string> = string,
-  TAccountCreator extends string | AccountMeta<string> = string,
+  TAccountMasterCreator extends string | AccountMeta<string> =
+    "6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A",
   TAccountSystemProgram extends string | AccountMeta<string> =
     "11111111111111111111111111111111",
   TRemainingAccounts extends readonly AccountMeta<string>[] = [],
@@ -87,10 +88,10 @@ export type InitializeAirdropMasterInstruction<
       TAccountAffiliate extends string
         ? WritableAccount<TAccountAffiliate>
         : TAccountAffiliate,
-      TAccountCreator extends string
-        ? WritableSignerAccount<TAccountCreator> &
-            AccountSignerMeta<TAccountCreator>
-        : TAccountCreator,
+      TAccountMasterCreator extends string
+        ? WritableSignerAccount<TAccountMasterCreator> &
+            AccountSignerMeta<TAccountMasterCreator>
+        : TAccountMasterCreator,
       TAccountSystemProgram extends string
         ? ReadonlyAccount<TAccountSystemProgram>
         : TAccountSystemProgram,
@@ -171,7 +172,7 @@ export type InitializeAirdropMasterAsyncInput<
   TAccountProtocolTreasury extends string = string,
   TAccountTreasury extends string = string,
   TAccountAffiliate extends string = string,
-  TAccountCreator extends string = string,
+  TAccountMasterCreator extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
   config?: Address<TAccountConfig>;
@@ -179,7 +180,7 @@ export type InitializeAirdropMasterAsyncInput<
   protocolTreasury: Address<TAccountProtocolTreasury>;
   treasury: Address<TAccountTreasury>;
   affiliate?: Address<TAccountAffiliate>;
-  creator: TransactionSigner<TAccountCreator>;
+  masterCreator?: TransactionSigner<TAccountMasterCreator>;
   systemProgram?: Address<TAccountSystemProgram>;
   airdropUpdateFee: InitializeAirdropMasterInstructionDataArgs["airdropUpdateFee"];
   airdropCreationFee: InitializeAirdropMasterInstructionDataArgs["airdropCreationFee"];
@@ -195,7 +196,7 @@ export async function getInitializeAirdropMasterInstructionAsync<
   TAccountProtocolTreasury extends string,
   TAccountTreasury extends string,
   TAccountAffiliate extends string,
-  TAccountCreator extends string,
+  TAccountMasterCreator extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof DROPSY_AIRDROP_PROGRAM_ADDRESS,
 >(
@@ -205,7 +206,7 @@ export async function getInitializeAirdropMasterInstructionAsync<
     TAccountProtocolTreasury,
     TAccountTreasury,
     TAccountAffiliate,
-    TAccountCreator,
+    TAccountMasterCreator,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
@@ -217,7 +218,7 @@ export async function getInitializeAirdropMasterInstructionAsync<
     TAccountProtocolTreasury,
     TAccountTreasury,
     TAccountAffiliate,
-    TAccountCreator,
+    TAccountMasterCreator,
     TAccountSystemProgram
   >
 > {
@@ -235,7 +236,7 @@ export async function getInitializeAirdropMasterInstructionAsync<
     },
     treasury: { value: input.treasury ?? null, isWritable: false },
     affiliate: { value: input.affiliate ?? null, isWritable: true },
-    creator: { value: input.creator ?? null, isWritable: true },
+    masterCreator: { value: input.masterCreator ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
   const accounts = originalAccounts as Record<
@@ -259,6 +260,10 @@ export async function getInitializeAirdropMasterInstructionAsync<
       ],
     });
   }
+  if (!accounts.masterCreator.value) {
+    accounts.masterCreator.value =
+      "6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A" as Address<"6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A">;
+  }
   if (!accounts.airdropMaster.value) {
     accounts.airdropMaster.value = await getProgramDerivedAddress({
       programAddress,
@@ -268,7 +273,7 @@ export async function getInitializeAirdropMasterInstructionAsync<
             97, 105, 114, 100, 114, 111, 112, 95, 109, 97, 115, 116, 101, 114,
           ]),
         ),
-        getAddressEncoder().encode(expectAddress(accounts.creator.value)),
+        getAddressEncoder().encode(expectAddress(accounts.masterCreator.value)),
       ],
     });
   }
@@ -285,7 +290,7 @@ export async function getInitializeAirdropMasterInstructionAsync<
       getAccountMeta(accounts.protocolTreasury),
       getAccountMeta(accounts.treasury),
       getAccountMeta(accounts.affiliate),
-      getAccountMeta(accounts.creator),
+      getAccountMeta(accounts.masterCreator),
       getAccountMeta(accounts.systemProgram),
     ],
     data: getInitializeAirdropMasterInstructionDataEncoder().encode(
@@ -299,7 +304,7 @@ export async function getInitializeAirdropMasterInstructionAsync<
     TAccountProtocolTreasury,
     TAccountTreasury,
     TAccountAffiliate,
-    TAccountCreator,
+    TAccountMasterCreator,
     TAccountSystemProgram
   >);
 }
@@ -310,7 +315,7 @@ export type InitializeAirdropMasterInput<
   TAccountProtocolTreasury extends string = string,
   TAccountTreasury extends string = string,
   TAccountAffiliate extends string = string,
-  TAccountCreator extends string = string,
+  TAccountMasterCreator extends string = string,
   TAccountSystemProgram extends string = string,
 > = {
   config: Address<TAccountConfig>;
@@ -318,7 +323,7 @@ export type InitializeAirdropMasterInput<
   protocolTreasury: Address<TAccountProtocolTreasury>;
   treasury: Address<TAccountTreasury>;
   affiliate?: Address<TAccountAffiliate>;
-  creator: TransactionSigner<TAccountCreator>;
+  masterCreator?: TransactionSigner<TAccountMasterCreator>;
   systemProgram?: Address<TAccountSystemProgram>;
   airdropUpdateFee: InitializeAirdropMasterInstructionDataArgs["airdropUpdateFee"];
   airdropCreationFee: InitializeAirdropMasterInstructionDataArgs["airdropCreationFee"];
@@ -334,7 +339,7 @@ export function getInitializeAirdropMasterInstruction<
   TAccountProtocolTreasury extends string,
   TAccountTreasury extends string,
   TAccountAffiliate extends string,
-  TAccountCreator extends string,
+  TAccountMasterCreator extends string,
   TAccountSystemProgram extends string,
   TProgramAddress extends Address = typeof DROPSY_AIRDROP_PROGRAM_ADDRESS,
 >(
@@ -344,7 +349,7 @@ export function getInitializeAirdropMasterInstruction<
     TAccountProtocolTreasury,
     TAccountTreasury,
     TAccountAffiliate,
-    TAccountCreator,
+    TAccountMasterCreator,
     TAccountSystemProgram
   >,
   config?: { programAddress?: TProgramAddress },
@@ -355,7 +360,7 @@ export function getInitializeAirdropMasterInstruction<
   TAccountProtocolTreasury,
   TAccountTreasury,
   TAccountAffiliate,
-  TAccountCreator,
+  TAccountMasterCreator,
   TAccountSystemProgram
 > {
   // Program address.
@@ -372,7 +377,7 @@ export function getInitializeAirdropMasterInstruction<
     },
     treasury: { value: input.treasury ?? null, isWritable: false },
     affiliate: { value: input.affiliate ?? null, isWritable: true },
-    creator: { value: input.creator ?? null, isWritable: true },
+    masterCreator: { value: input.masterCreator ?? null, isWritable: true },
     systemProgram: { value: input.systemProgram ?? null, isWritable: false },
   };
   const accounts = originalAccounts as Record<
@@ -384,6 +389,10 @@ export function getInitializeAirdropMasterInstruction<
   const args = { ...input };
 
   // Resolve default values.
+  if (!accounts.masterCreator.value) {
+    accounts.masterCreator.value =
+      "6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A" as Address<"6TMmpVof9fGXak2VUgP4X9sXNfPHA7XWyi9ZMUCrHP6A">;
+  }
   if (!accounts.systemProgram.value) {
     accounts.systemProgram.value =
       "11111111111111111111111111111111" as Address<"11111111111111111111111111111111">;
@@ -397,7 +406,7 @@ export function getInitializeAirdropMasterInstruction<
       getAccountMeta(accounts.protocolTreasury),
       getAccountMeta(accounts.treasury),
       getAccountMeta(accounts.affiliate),
-      getAccountMeta(accounts.creator),
+      getAccountMeta(accounts.masterCreator),
       getAccountMeta(accounts.systemProgram),
     ],
     data: getInitializeAirdropMasterInstructionDataEncoder().encode(
@@ -411,7 +420,7 @@ export function getInitializeAirdropMasterInstruction<
     TAccountProtocolTreasury,
     TAccountTreasury,
     TAccountAffiliate,
-    TAccountCreator,
+    TAccountMasterCreator,
     TAccountSystemProgram
   >);
 }
@@ -427,7 +436,7 @@ export type ParsedInitializeAirdropMasterInstruction<
     protocolTreasury: TAccountMetas[2];
     treasury: TAccountMetas[3];
     affiliate?: TAccountMetas[4] | undefined;
-    creator: TAccountMetas[5];
+    masterCreator: TAccountMetas[5];
     systemProgram: TAccountMetas[6];
   };
   data: InitializeAirdropMasterInstructionData;
@@ -465,7 +474,7 @@ export function parseInitializeAirdropMasterInstruction<
       protocolTreasury: getNextAccount(),
       treasury: getNextAccount(),
       affiliate: getNextOptionalAccount(),
-      creator: getNextAccount(),
+      masterCreator: getNextAccount(),
       systemProgram: getNextAccount(),
     },
     data: getInitializeAirdropMasterInstructionDataDecoder().decode(

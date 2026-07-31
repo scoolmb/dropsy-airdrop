@@ -18,13 +18,13 @@ With Airdrop Master, teams can create their own airdrop systems, customize fee m
 ⚠️ This SDK is in active development  
 ⚠️ All program addresses are temporary  
 ⚠️ Instruction formats may change without warning  
-⚠️ Devnet only - no mainnet support yet
+⚠️ Mainnet ( Experimental - very limited access )
 
 ## 🔭 Current Status (v0.β)
 
-- **Network**: Devnet only
+- **Network**: Mainnet ( admin access ) --> WL (soon)
 - **Stability**: Experimental
-- **Program ID**: Subject to change
+- **Program ID**: drophxkcW5TRfbMQgo45Yti3q8jVxuxvuNufMnu8WiE
 
 > Full API documentation: [https://docs.dropsy.org/](https://docs.dropsy.org/)
 

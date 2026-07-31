@@ -57,15 +57,13 @@ export type AirdropMaster = {
   createdAirdrops: bigint;
   points: bigint;
   totalClaimCount: bigint;
-  monetizedClaimQuota: bigint;
-  monetizedClaimCount: bigint;
   airdropUpdateFee: bigint;
   airdropCreationFee: bigint;
   airdropClaimFee: bigint;
-  airdropDelegateFee: bigint;
   bitmapCreationFee: bigint;
   bump: number;
   padding: ReadonlyUint8Array;
+  reserved: ReadonlyUint8Array;
 };
 
 export type AirdropMasterArgs = {
@@ -75,15 +73,13 @@ export type AirdropMasterArgs = {
   createdAirdrops: number | bigint;
   points: number | bigint;
   totalClaimCount: number | bigint;
-  monetizedClaimQuota: number | bigint;
-  monetizedClaimCount: number | bigint;
   airdropUpdateFee: number | bigint;
   airdropCreationFee: number | bigint;
   airdropClaimFee: number | bigint;
-  airdropDelegateFee: number | bigint;
   bitmapCreationFee: number | bigint;
   bump: number;
   padding: ReadonlyUint8Array;
+  reserved: ReadonlyUint8Array;
 };
 
 /** Gets the encoder for {@link AirdropMasterArgs} account data. */
@@ -97,15 +93,13 @@ export function getAirdropMasterEncoder(): FixedSizeEncoder<AirdropMasterArgs> {
       ["createdAirdrops", getU64Encoder()],
       ["points", getU64Encoder()],
       ["totalClaimCount", getU64Encoder()],
-      ["monetizedClaimQuota", getU64Encoder()],
-      ["monetizedClaimCount", getU64Encoder()],
       ["airdropUpdateFee", getU64Encoder()],
       ["airdropCreationFee", getU64Encoder()],
       ["airdropClaimFee", getU64Encoder()],
-      ["airdropDelegateFee", getU64Encoder()],
       ["bitmapCreationFee", getU64Encoder()],
       ["bump", getU8Encoder()],
       ["padding", fixEncoderSize(getBytesEncoder(), 7)],
+      ["reserved", fixEncoderSize(getBytesEncoder(), 128)],
     ]),
     (value) => ({ ...value, discriminator: AIRDROP_MASTER_DISCRIMINATOR }),
   );
@@ -121,15 +115,13 @@ export function getAirdropMasterDecoder(): FixedSizeDecoder<AirdropMaster> {
     ["createdAirdrops", getU64Decoder()],
     ["points", getU64Decoder()],
     ["totalClaimCount", getU64Decoder()],
-    ["monetizedClaimQuota", getU64Decoder()],
-    ["monetizedClaimCount", getU64Decoder()],
     ["airdropUpdateFee", getU64Decoder()],
     ["airdropCreationFee", getU64Decoder()],
     ["airdropClaimFee", getU64Decoder()],
-    ["airdropDelegateFee", getU64Decoder()],
     ["bitmapCreationFee", getU64Decoder()],
     ["bump", getU8Decoder()],
     ["padding", fixDecoderSize(getBytesDecoder(), 7)],
+    ["reserved", fixDecoderSize(getBytesDecoder(), 128)],
   ]);
 }
 
@@ -199,5 +191,5 @@ export async function fetchAllMaybeAirdropMaster(
 }
 
 export function getAirdropMasterSize(): number {
-  return 192;
+  return 296;
 }
