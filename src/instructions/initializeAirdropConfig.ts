@@ -12,17 +12,9 @@ import {
   fixEncoderSize,
   getBytesDecoder,
   getBytesEncoder,
-  getI64Decoder,
-  getI64Encoder,
-  getOptionDecoder,
-  getOptionEncoder,
   getProgramDerivedAddress,
   getStructDecoder,
   getStructEncoder,
-  getU16Decoder,
-  getU16Encoder,
-  getU64Decoder,
-  getU64Encoder,
   transformEncoder,
   type AccountMeta,
   type AccountSignerMeta,
@@ -33,8 +25,6 @@ import {
   type Instruction,
   type InstructionWithAccounts,
   type InstructionWithData,
-  type Option,
-  type OptionOrNullable,
   type ReadonlyAccount,
   type ReadonlyUint8Array,
   type TransactionSigner,
@@ -43,6 +33,12 @@ import {
 } from "@solana/kit";
 import { DROPSY_AIRDROP_PROGRAM_ADDRESS } from "../programs";
 import { getAccountMetaFactory, type ResolvedAccount } from "../shared";
+import {
+  getAirdropConfigInitArgsDecoder,
+  getAirdropConfigInitArgsEncoder,
+  type AirdropConfigInitArgs,
+  type AirdropConfigInitArgsArgs,
+} from "../types";
 
 export const INITIALIZE_AIRDROP_CONFIG_DISCRIMINATOR = new Uint8Array([
   160, 68, 127, 205, 130, 205, 156, 94,
@@ -86,45 +82,18 @@ export type InitializeAirdropConfigInstruction<
 
 export type InitializeAirdropConfigInstructionData = {
   discriminator: ReadonlyUint8Array;
-  wlRoot: Option<ReadonlyUint8Array>;
-  airdropMasterCreateFee: Option<bigint>;
-  maxClaimFee: Option<bigint>;
-  maxActionFee: Option<bigint>;
-  minAirdropDuration: Option<bigint>;
-  defaultAirdropDuration: Option<bigint>;
-  maxAirdropDuration: Option<bigint>;
-  updateGracePeriod: Option<bigint>;
-  protocolFee: Option<bigint>;
-  masterFeeBps: Option<number>;
+  args: AirdropConfigInitArgs;
 };
 
 export type InitializeAirdropConfigInstructionDataArgs = {
-  wlRoot: OptionOrNullable<ReadonlyUint8Array>;
-  airdropMasterCreateFee: OptionOrNullable<number | bigint>;
-  maxClaimFee: OptionOrNullable<number | bigint>;
-  maxActionFee: OptionOrNullable<number | bigint>;
-  minAirdropDuration: OptionOrNullable<number | bigint>;
-  defaultAirdropDuration: OptionOrNullable<number | bigint>;
-  maxAirdropDuration: OptionOrNullable<number | bigint>;
-  updateGracePeriod: OptionOrNullable<number | bigint>;
-  protocolFee: OptionOrNullable<number | bigint>;
-  masterFeeBps: OptionOrNullable<number>;
+  args: AirdropConfigInitArgsArgs;
 };
 
 export function getInitializeAirdropConfigInstructionDataEncoder(): Encoder<InitializeAirdropConfigInstructionDataArgs> {
   return transformEncoder(
     getStructEncoder([
       ["discriminator", fixEncoderSize(getBytesEncoder(), 8)],
-      ["wlRoot", getOptionEncoder(fixEncoderSize(getBytesEncoder(), 32))],
-      ["airdropMasterCreateFee", getOptionEncoder(getU64Encoder())],
-      ["maxClaimFee", getOptionEncoder(getU64Encoder())],
-      ["maxActionFee", getOptionEncoder(getU64Encoder())],
-      ["minAirdropDuration", getOptionEncoder(getI64Encoder())],
-      ["defaultAirdropDuration", getOptionEncoder(getI64Encoder())],
-      ["maxAirdropDuration", getOptionEncoder(getI64Encoder())],
-      ["updateGracePeriod", getOptionEncoder(getI64Encoder())],
-      ["protocolFee", getOptionEncoder(getU64Encoder())],
-      ["masterFeeBps", getOptionEncoder(getU16Encoder())],
+      ["args", getAirdropConfigInitArgsEncoder()],
     ]),
     (value) => ({
       ...value,
@@ -136,16 +105,7 @@ export function getInitializeAirdropConfigInstructionDataEncoder(): Encoder<Init
 export function getInitializeAirdropConfigInstructionDataDecoder(): Decoder<InitializeAirdropConfigInstructionData> {
   return getStructDecoder([
     ["discriminator", fixDecoderSize(getBytesDecoder(), 8)],
-    ["wlRoot", getOptionDecoder(fixDecoderSize(getBytesDecoder(), 32))],
-    ["airdropMasterCreateFee", getOptionDecoder(getU64Decoder())],
-    ["maxClaimFee", getOptionDecoder(getU64Decoder())],
-    ["maxActionFee", getOptionDecoder(getU64Decoder())],
-    ["minAirdropDuration", getOptionDecoder(getI64Decoder())],
-    ["defaultAirdropDuration", getOptionDecoder(getI64Decoder())],
-    ["maxAirdropDuration", getOptionDecoder(getI64Decoder())],
-    ["updateGracePeriod", getOptionDecoder(getI64Decoder())],
-    ["protocolFee", getOptionDecoder(getU64Decoder())],
-    ["masterFeeBps", getOptionDecoder(getU16Decoder())],
+    ["args", getAirdropConfigInitArgsDecoder()],
   ]);
 }
 
@@ -169,16 +129,7 @@ export type InitializeAirdropConfigAsyncInput<
   protocolTreasury: Address<TAccountProtocolTreasury>;
   authority?: TransactionSigner<TAccountAuthority>;
   systemProgram?: Address<TAccountSystemProgram>;
-  wlRoot: InitializeAirdropConfigInstructionDataArgs["wlRoot"];
-  airdropMasterCreateFee: InitializeAirdropConfigInstructionDataArgs["airdropMasterCreateFee"];
-  maxClaimFee: InitializeAirdropConfigInstructionDataArgs["maxClaimFee"];
-  maxActionFee: InitializeAirdropConfigInstructionDataArgs["maxActionFee"];
-  minAirdropDuration: InitializeAirdropConfigInstructionDataArgs["minAirdropDuration"];
-  defaultAirdropDuration: InitializeAirdropConfigInstructionDataArgs["defaultAirdropDuration"];
-  maxAirdropDuration: InitializeAirdropConfigInstructionDataArgs["maxAirdropDuration"];
-  updateGracePeriod: InitializeAirdropConfigInstructionDataArgs["updateGracePeriod"];
-  protocolFee: InitializeAirdropConfigInstructionDataArgs["protocolFee"];
-  masterFeeBps: InitializeAirdropConfigInstructionDataArgs["masterFeeBps"];
+  args: InitializeAirdropConfigInstructionDataArgs["args"];
 };
 
 export async function getInitializeAirdropConfigInstructionAsync<
@@ -279,16 +230,7 @@ export type InitializeAirdropConfigInput<
   protocolTreasury: Address<TAccountProtocolTreasury>;
   authority?: TransactionSigner<TAccountAuthority>;
   systemProgram?: Address<TAccountSystemProgram>;
-  wlRoot: InitializeAirdropConfigInstructionDataArgs["wlRoot"];
-  airdropMasterCreateFee: InitializeAirdropConfigInstructionDataArgs["airdropMasterCreateFee"];
-  maxClaimFee: InitializeAirdropConfigInstructionDataArgs["maxClaimFee"];
-  maxActionFee: InitializeAirdropConfigInstructionDataArgs["maxActionFee"];
-  minAirdropDuration: InitializeAirdropConfigInstructionDataArgs["minAirdropDuration"];
-  defaultAirdropDuration: InitializeAirdropConfigInstructionDataArgs["defaultAirdropDuration"];
-  maxAirdropDuration: InitializeAirdropConfigInstructionDataArgs["maxAirdropDuration"];
-  updateGracePeriod: InitializeAirdropConfigInstructionDataArgs["updateGracePeriod"];
-  protocolFee: InitializeAirdropConfigInstructionDataArgs["protocolFee"];
-  masterFeeBps: InitializeAirdropConfigInstructionDataArgs["masterFeeBps"];
+  args: InitializeAirdropConfigInstructionDataArgs["args"];
 };
 
 export function getInitializeAirdropConfigInstruction<

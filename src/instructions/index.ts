@@ -7,8 +7,13 @@
  */
 
 export * from "./claimAirdrop";
+export * from "./closeAirdrop";
+export * from "./closeBitmap";
 export * from "./createAirdrop";
 export * from "./createBitmap";
 export * from "./depositTokens";
 export * from "./initializeAirdropConfig";
 export * from "./initializeAirdropMaster";
+export * from "./redeemAirdropTokens";
+export * from "./updateAirdrop";
+export * from "./updateAirdropConfig";

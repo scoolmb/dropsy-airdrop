@@ -11,3 +11,7 @@ export * from "./errors";
 export * from "./instructions";
 export * from "./programs";
 export * from "./types";
+
+// add
+export * from "./helpers";
+export * from "./context";

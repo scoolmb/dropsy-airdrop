@@ -1,6 +1,6 @@
 {
   "name": "@dropsy/airdrop",
-  "version": "0.4.5",
+  "version": "0.5.1",
   "description": "Dropsy - The Token Distribution Layer on SOLANA - A powerful and flexible airdrop protocol for seamless token distribution on the Solana blockchain.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

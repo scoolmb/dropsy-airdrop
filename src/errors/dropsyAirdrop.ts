@@ -66,10 +66,14 @@ export const DROPSY_AIRDROP_ERROR__INVALID_VAULT_AUTHORITY = 0x183a; // 6202
 export const DROPSY_AIRDROP_ERROR__INVALID_DESTINATION_OWNER = 0x183b; // 6203
 /** InvalidAffiliatePda: Mismatched affiliate PDA */
 export const DROPSY_AIRDROP_ERROR__INVALID_AFFILIATE_PDA = 0x183c; // 6204
-/** Unauthorized: Not Authorized */
+/** Unauthorized: Not Authorized Access */
 export const DROPSY_AIRDROP_ERROR__UNAUTHORIZED = 0x183d; // 6205
 /** InvalidOwner: Transaction sender is not the owner */
 export const DROPSY_AIRDROP_ERROR__INVALID_OWNER = 0x183e; // 6206
+/** NotWhitelisted: This Wallet is not whitelisted for access */
+export const DROPSY_AIRDROP_ERROR__NOT_WHITELISTED = 0x183f; // 6207
+/** WlProofNotProvided: This Request Requires WL proof */
+export const DROPSY_AIRDROP_ERROR__WL_PROOF_NOT_PROVIDED = 0x1840; // 6208
 /** InvalidMint: Mint does not match stored state */
 export const DROPSY_AIRDROP_ERROR__INVALID_MINT = 0x189c; // 6300
 /** MintMismatch: Provided mint doesn't match expected mint */
@@ -160,10 +164,15 @@ export const DROPSY_AIRDROP_ERROR__VESTING_ACCOUNT_REQUIRED = 0x1a34; // 6708
 export const DROPSY_AIRDROP_ERROR__INVALID_PARENT_ACCOUNT = 0x1a35; // 6709
 /** InvalidAirdropVestingVersion: Airdrop version don't support vesting */
 export const DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_VESTING_VERSION = 0x1a36; // 6710
+/** InvalidAirdropId: invalid airdrop id */
+export const DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_ID = 0x1a37; // 6711
+/** AirdropAlreadyRedeemed: Airdrop has already been redeemed */
+export const DROPSY_AIRDROP_ERROR__AIRDROP_ALREADY_REDEEMED = 0x1a38; // 6712
 
 export type DropsyAirdropError =
   | typeof DROPSY_AIRDROP_ERROR__ACTION_FEE_TOO_HIGH
   | typeof DROPSY_AIRDROP_ERROR__ACTIVE_BITMAPS_EXIST
+  | typeof DROPSY_AIRDROP_ERROR__AIRDROP_ALREADY_REDEEMED
   | typeof DROPSY_AIRDROP_ERROR__AIRDROP_ENDED
   | typeof DROPSY_AIRDROP_ERROR__AIRDROP_NOT_ENDED
   | typeof DROPSY_AIRDROP_ERROR__AIRDROP_NOT_STARTED
@@ -182,6 +191,7 @@ export type DropsyAirdropError =
   | typeof DROPSY_AIRDROP_ERROR__INSUFFICIENT_VAULT_FUNDS
   | typeof DROPSY_AIRDROP_ERROR__INVALID_ADMIN
   | typeof DROPSY_AIRDROP_ERROR__INVALID_AFFILIATE_PDA
+  | typeof DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_ID
   | typeof DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_PDA
   | typeof DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_VERSION
   | typeof DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_VESTING_VERSION
@@ -216,6 +226,7 @@ export type DropsyAirdropError =
   | typeof DROPSY_AIRDROP_ERROR__MISSING_BITMAP_PDA
   | typeof DROPSY_AIRDROP_ERROR__NFT_NOT_ALLOWED
   | typeof DROPSY_AIRDROP_ERROR__NON_ZERO_VALUE_REQUIRED
+  | typeof DROPSY_AIRDROP_ERROR__NOT_WHITELISTED
   | typeof DROPSY_AIRDROP_ERROR__OVERFLOW
   | typeof DROPSY_AIRDROP_ERROR__OWNER_MISMATCH
   | typeof DROPSY_AIRDROP_ERROR__SOURCE_ACCOUNT_FROZEN
@@ -234,13 +245,15 @@ export type DropsyAirdropError =
   | typeof DROPSY_AIRDROP_ERROR__VAULT_MINT_MISMATCH
   | typeof DROPSY_AIRDROP_ERROR__VAULT_NOT_INITIALIZED
   | typeof DROPSY_AIRDROP_ERROR__VAULT_NOT_RENT_EXEMPT
-  | typeof DROPSY_AIRDROP_ERROR__VESTING_ACCOUNT_REQUIRED;
+  | typeof DROPSY_AIRDROP_ERROR__VESTING_ACCOUNT_REQUIRED
+  | typeof DROPSY_AIRDROP_ERROR__WL_PROOF_NOT_PROVIDED;
 
 let dropsyAirdropErrorMessages: Record<DropsyAirdropError, string> | undefined;
 if (process.env.NODE_ENV !== "production") {
   dropsyAirdropErrorMessages = {
     [DROPSY_AIRDROP_ERROR__ACTION_FEE_TOO_HIGH]: `Action fee exceeds maximum allowed`,
     [DROPSY_AIRDROP_ERROR__ACTIVE_BITMAPS_EXIST]: `Active bitmaps exist`,
+    [DROPSY_AIRDROP_ERROR__AIRDROP_ALREADY_REDEEMED]: `Airdrop has already been redeemed`,
     [DROPSY_AIRDROP_ERROR__AIRDROP_ENDED]: `Airdrop has already ended`,
     [DROPSY_AIRDROP_ERROR__AIRDROP_NOT_ENDED]: `Airdrop not yet ended`,
     [DROPSY_AIRDROP_ERROR__AIRDROP_NOT_STARTED]: `Airdrop has not started yet`,
@@ -259,6 +272,7 @@ if (process.env.NODE_ENV !== "production") {
     [DROPSY_AIRDROP_ERROR__INSUFFICIENT_VAULT_FUNDS]: `Insufficient vault funds`,
     [DROPSY_AIRDROP_ERROR__INVALID_ADMIN]: `This Request Requires Admin Privileges`,
     [DROPSY_AIRDROP_ERROR__INVALID_AFFILIATE_PDA]: `Mismatched affiliate PDA`,
+    [DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_ID]: `invalid airdrop id`,
     [DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_PDA]: `Invalid vault account`,
     [DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_VERSION]: `invalid airdrop version`,
     [DROPSY_AIRDROP_ERROR__INVALID_AIRDROP_VESTING_VERSION]: `Airdrop version don't support vesting`,
@@ -293,13 +307,14 @@ if (process.env.NODE_ENV !== "production") {
     [DROPSY_AIRDROP_ERROR__MISSING_BITMAP_PDA]: `Missing bitmap PDA`,
     [DROPSY_AIRDROP_ERROR__NFT_NOT_ALLOWED]: `Fungible tokens only (no NFTs)`,
     [DROPSY_AIRDROP_ERROR__NON_ZERO_VALUE_REQUIRED]: `Number must be non-zero`,
+    [DROPSY_AIRDROP_ERROR__NOT_WHITELISTED]: `This Wallet is not whitelisted for access`,
     [DROPSY_AIRDROP_ERROR__OVERFLOW]: `Arithmetic overflow`,
     [DROPSY_AIRDROP_ERROR__OWNER_MISMATCH]: `Airdrop owner mismatch`,
     [DROPSY_AIRDROP_ERROR__SOURCE_ACCOUNT_FROZEN]: `Source account is frozen`,
     [DROPSY_AIRDROP_ERROR__SOURCE_HAS_CLOSE_AUTHORITY]: `Source has close authority`,
     [DROPSY_AIRDROP_ERROR__SOURCE_HAS_DELEGATE]: `Source has delegate set`,
     [DROPSY_AIRDROP_ERROR__TOO_MANY_BITMAPS]: `Too many bitmap accounts`,
-    [DROPSY_AIRDROP_ERROR__UNAUTHORIZED]: `Not Authorized`,
+    [DROPSY_AIRDROP_ERROR__UNAUTHORIZED]: `Not Authorized Access`,
     [DROPSY_AIRDROP_ERROR__UN_AUTHORIZED]: `Invalid Authority Pubkey`,
     [DROPSY_AIRDROP_ERROR__UPDATE_CUTOFF_TIME_PASSED]: `Airdrop updates are only allowed until cutoff time before start`,
     [DROPSY_AIRDROP_ERROR__VALUE_BELOW_THE_MINIMUM]: `Value below the minimum`,
@@ -312,6 +327,7 @@ if (process.env.NODE_ENV !== "production") {
     [DROPSY_AIRDROP_ERROR__VAULT_NOT_INITIALIZED]: `Vault not initialized`,
     [DROPSY_AIRDROP_ERROR__VAULT_NOT_RENT_EXEMPT]: `Vault not rent exempt`,
     [DROPSY_AIRDROP_ERROR__VESTING_ACCOUNT_REQUIRED]: `vesting account required for vested airdrop`,
+    [DROPSY_AIRDROP_ERROR__WL_PROOF_NOT_PROVIDED]: `This Request Requires WL proof`,
   };
 }
 

@@ -18,11 +18,11 @@ With Airdrop Master, teams can create their own airdrop systems, customize fee m
 ⚠️ This SDK is in active development  
 ⚠️ All program addresses are temporary  
 ⚠️ Instruction formats may change without warning  
-⚠️ Mainnet ( Experimental - very limited access )
+⚠️ Mainnet ( Experimental - limited access )
 
 ## 🔭 Current Status (v0.β)
 
-- **Network**: Mainnet ( admin access ) --> WL (soon)
+- **Network**: Mainnet ( WL access )
 - **Stability**: Experimental
 - **Program ID**: drophxkcW5TRfbMQgo45Yti3q8jVxuxvuNufMnu8WiE
 

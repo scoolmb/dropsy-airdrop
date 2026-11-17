@@ -6,6 +6,7 @@
  * @see https://github.com/codama-idl/codama
  */
 
+export * from "./airdropConfigInitArgs";
 export * from "./airdropInitialized";
 export * from "./bitmapClosed";
 export * from "./bitmapInitialized";
